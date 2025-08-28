@@ -194,30 +194,32 @@ const Main = () => {
                             isOpen={selectedRankingModal}
                             onRequestClose={closeViewRankingModal}
                             contentLabel="Ranked List"
+                            className={style.modalStyle}
                         >
                             {selectedRanking ? (
                                 <>
+                                <label htmlFor="item">Série: </label>
+                                <input type="text" id="item" value={newItem} onChange={(event) => setNewItem(event.target.value)}/>
                                 <h2 className={style.rankingTitle}>{selectedRanking.newTitle}</h2>
                             <p className={style.rankingDescription}>{selectedRanking.newDescription}</p>
                             <div>
-                                <label htmlFor="item">Item: </label>
-                                <input type="text" id="item" value={newItem} onChange={(event) => setNewItem(event.target.value)}/>
                             </div>
                             <div className={style.viewingRanking}>
                                     {newItem === '' && selectedRanking.items && selectedRanking.items.length > 0 ? (
                                         selectedRanking.items.map((item) => (
                                             <div key={item.itemId}>
-                                                <p className={style.title}>{item.position}º - {item.title}</p>
-                                            <div className={style.itemContainer}>
-                                                <img
-                                                    className={style.picture}
-                                                    src={`https://image.tmdb.org/t/p/w500${item.poster}`}
-                                                    alt={item.name}
-                                                />
-                                                <div className={style.itemInformations}>
-                                                    <p className={style.itemDescription}>{item.description}</p>
-                                                    <p className={style.itemRating}>Nota: {item.rating}</p>
-                                                </div>
+                                                <p className={style.position}>{item.position}º</p>
+                                                <div className={style.itemContainer}>
+                                                    <img
+                                                        className={style.picture}
+                                                        src={`https://image.tmdb.org/t/p/w500${item.poster}`}
+                                                        alt={item.name}
+                                                    />
+                                                    <div className={style.itemInformations}>
+                                                        <p className={style.title}>{item.title}</p>
+                                                        <p className={style.itemDescription}>{item.description}</p>
+                                                        <p className={style.itemRating}>Nota: {item.rating}</p>
+                                                    </div>
                                             </div>
                                             </div>
                                         ))
@@ -227,7 +229,8 @@ const Main = () => {
                                     <ul>
                                     {searchItems.length > 0 && newItem !== '' ?(
                                         searchItems.map((searchItem) => (
-                                            <li 
+                                            <li
+                                                className={style.searchItem}
                                                 key={searchItem.id}
                                                 onClick={() => choosedItem(selectedRanking.id, searchItem.id)}
                                             >
@@ -236,7 +239,7 @@ const Main = () => {
                                                     src={`https://image.tmdb.org/t/p/w500${searchItem.poster_path}`}
                                                     alt={searchItem.name}
                                                 />
-                                                {searchItem.name}
+                                                <h2 className={style.searchItemName}>{searchItem.name}</h2>
                                             </li>
                                         ))
                                     ):(
@@ -247,14 +250,17 @@ const Main = () => {
                             isOpen={itemModal}
                             onRequestClose={closeItemModal}
                             contentLabel="Ranked List"
+                            className={style.ItemInfoModal}
                         >
-                            <label htmlFor='position'>Posição: </label>
-                            <input id='position' type='number' value={newPosition} onChange={(event) => setNewPosition(event.target.value)}></input>
-                            <label htmlFor='itemDescription'>Descrição: </label>
-                            <input id='itemDescription' type='text' value={newDescriptionItem} onChange={(event) => setNewDescriptionItem(event.target.value) }></input>
-                            <label htmlFor='rating'>Nota: </label>
-                            <input id='rating' type='number' value={newRating} onChange={(event) => setNewRating(event.target.value) }></input>
-                            <button id='saveItemInformations' onClick={() => itemsInformations(selectedRanking.id)}>Salvar</button>
+                            <div className={style.infoModalContainer}>
+                                <label className={style.infoModalContent} htmlFor='position'>Posição: </label>
+                                <input id='position' type='number' value={newPosition} onChange={(event) => setNewPosition(event.target.value)}></input>
+                                <label className={style.infoModalContent} htmlFor='itemDescription'>Descrição: </label>
+                                <input id='itemDescription' type='text' value={newDescriptionItem} onChange={(event) => setNewDescriptionItem(event.target.value) }></input>
+                                <label className={style.infoModalContent} htmlFor='rating'>Nota: </label>
+                                <input id='rating' type='number' value={newRating} onChange={(event) => setNewRating(event.target.value) }></input>
+                                <button className={style.newItemBtn} id='saveItemInformations' onClick={() => itemsInformations(selectedRanking.id)}>Salvar</button>
+                            </div>
                         </Modal>
                             </div>
                                 </>
