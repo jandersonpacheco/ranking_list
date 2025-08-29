@@ -21,13 +21,14 @@ const Main = () => {
     const [newPosition, setNewPosition] = useState('')
     const [newDescriptionItem, setNewDescriptionItem] = useState('')
     const [newRating, setNewRating] = useState('')
+    //Pending Item
+    const [pendingItem, setPendingItem] = useState(null)
     //Selected Ranking
     const [selectedRanking, setSelectedRanking] = useState(null)
     const editingItemRef = useRef(null)
     //API Data
     const [searchItems, setSearchItems] = useState([])
     const [loading, setLoading] = useState(true)
-
 
     //New Ranking Modal Function
     const newRanking = () => {
@@ -47,9 +48,7 @@ const Main = () => {
     //Selected Ranking Modal Function
     const viewRanking = (id) => {
         const selectedRanking = rankings.find(ranking => ranking.id === id)
-
         if (!selectedRanking) return
-
         setSelectedRanking(selectedRanking)
         setSelectedRankingModal(true)
     }
@@ -67,7 +66,6 @@ const Main = () => {
             items: []
         }
         setRankings(prevRankings => [...prevRankings, newRanking])
-
         setNewTitle('')
         setNewDescription('')
         setNewListModal(false)
@@ -81,7 +79,6 @@ const Main = () => {
 
     useEffect(() =>{
         if(newItem === '') return
-
         axios.get(`https://api.themoviedb.org/3/search/tv?query=${newItem}&include_adult=false&language=en-US&page=1`, {headers})
             .then((response) => {
                 setSearchItems(response.data.results)
@@ -93,77 +90,55 @@ const Main = () => {
             })
     }, [newItem])
 
-    //Add API data to the list
+    // ✅ CORRIGIDO: Função sem updateRanking
     const choosedItem = (rankingId, itemId) => {
-        setItemModal(true)
-
         const selectedRanking = rankings.find(ranking => ranking.id === rankingId)
         const selectedItem = searchItems.find(item => item.id === itemId)
-
-        if(!selectedRanking || !selectedItem) return item
-        
-        const updatedItems = [...selectedRanking.items,{
-            id: selectedItem.id,
-            title: selectedItem.name,
-            poster: selectedItem.poster_path,
-        }]
-
-        const updateRanking = {
-            ...selectedRanking,
-            items: updatedItems
-        }
-
-        setRankings(prevRankings => prevRankings.map(ranking =>
-            ranking.id === rankingId ? updateRanking : ranking
-        ))
-
+        if(!selectedRanking || !selectedItem) return
+        setPendingItem({
+            rankingId,
+            item: {
+                id: selectedItem.id,
+                title: selectedItem.name,
+                poster: selectedItem.poster_path
+            }
+        })
         editingItemRef.current = itemId
-        setSelectedRanking(updateRanking)
+        setItemModal(true)
         setNewItem('')
         setSearchItems([])
     }
 
     //Save items Informations (rating, position and description)
-    const itemsInformation = (event, rankingId) => {
+    const itemsInformation = (event) => {
         event.preventDefault()
-
+        if(!pendingItem) return
+        const { rankingId, item } = pendingItem
         const selectedRanking = rankings.find(ranking => ranking.id === rankingId)
-
-        if(!selectedRanking) return console.error('ID ou item não encontrado.')
-
-        if(selectedRanking.position === newPosition || newPosition === '') return alert('Posição já preenchida ou inexistente.')
-
-        const updatedItemsInformations = selectedRanking.items.map(item => {
-            if(item.id !== editingItemRef.current) return item
-
-            return{
-                ...item,
-                position: newPosition,
-                description: newDescriptionItem,
-                rating: newRating
-            }
-        })
-
+        if (!selectedRanking) return
+        const isPositionUsed = selectedRanking.items.some(i => i.position === newPosition)
+        if (isPositionUsed || newPosition === '') return alert('Posição já preenchida ou inexistente.')
+        const fullItem = {
+            ...item,
+            position: newPosition,
+            description: newDescriptionItem,
+            rating: newRating
+        }
         const updatedRanking = {
             ...selectedRanking,
-            items: updatedItemsInformations
+            items: [...selectedRanking.items, fullItem].sort((a, b) => a.position - b.position)
         }
-
-        updatedRanking.items.sort((a, b) => {
-            return a.position - b.position
-        })
-
         setRankings(prevRankings => prevRankings.map(ranking =>
             ranking.id === rankingId ? updatedRanking : ranking
         ))
-
         setSelectedRanking(updatedRanking)
         setNewDescriptionItem('')
         setNewPosition('')
         setNewRating('')
         setItemModal(false)
+        setPendingItem(null)
     }
-    
+
     return (
         <>
             <div className={style.newRanking}>
@@ -207,36 +182,35 @@ const Main = () => {
                                 <div className={style.searchSection}>
                                     <label className={style.infoModalContent} htmlFor="item">Série: </label>
                                     <input type="text" id="item" value={newItem} onChange={(event) => setNewItem(event.target.value)}/>
-                                    <img className={style.cancelImg} src='../../public/X.png' alt='X' onClick={closeViewRankingModal}></img>
+                                    <img className={style.cancelImg} src='../../assets/X.png' alt='X' onClick={closeViewRankingModal}></img>
                                 </div>
                                 <h2 className={style.rankingTitle}>{selectedRanking.newTitle}</h2>
                             <p className={style.rankingDescription}>{selectedRanking.newDescription}</p>
-                            <div>
-                            </div>
+                            <div></div>
                             <div className={style.viewingRanking}>
-                                    {newItem === '' && selectedRanking.items && selectedRanking.items.length > 0 ? (
-                                        selectedRanking.items.map((item) => (
-                                            <div key={item.itemId}>
-                                                <p className={style.position}>{item.position}º</p>
-                                                <div className={style.itemContainer}>
-                                                    <img
-                                                        className={style.picture}
-                                                        src={`https://image.tmdb.org/t/p/w500${item.poster}`}
-                                                        alt={item.name}
-                                                    />
-                                                    <div className={style.itemInformations}>
-                                                        <p className={style.itemTitle}>{item.title}</p>
-                                                        <p className={style.itemDescription}>{item.description}</p>
-                                                        <p className={style.itemRating}>Nota: {item.rating}</p>
-                                                    </div>
+                                {newItem === '' && selectedRanking.items && selectedRanking.items.length > 0 ? (
+                                    selectedRanking.items.map((item) => (
+                                        <div key={item.itemId}>
+                                            <p className={style.position}>{item.position}º</p>
+                                            <div className={style.itemContainer}>
+                                                <img
+                                                    className={style.picture}
+                                                    src={`https://image.tmdb.org/t/p/w500${item.poster}`}
+                                                    alt={item.name}
+                                                />
+                                                <div className={style.itemInformations}>
+                                                    <p className={style.itemTitle}>{item.title}</p>
+                                                    <p className={style.itemDescription}>{item.description}</p>
+                                                    <p className={style.itemRating}>Nota: {item.rating}</p>
+                                                </div>
                                             </div>
-                                            </div>
-                                        ))
-                                    ):(
-                                        <></>
-                                    )}
-                                    <ul>
-                                    {searchItems.length > 0 && newItem !== '' ?(
+                                        </div>
+                                    ))
+                                ) : (
+                                    <></>
+                                )}
+                                <ul>
+                                    {searchItems.length > 0 && newItem !== '' ? (
                                         searchItems.map((searchItem) => (
                                             <li
                                                 className={style.searchItem}
@@ -251,37 +225,47 @@ const Main = () => {
                                                 <h2 className={style.searchItemName}>{searchItem.name}</h2>
                                             </li>
                                         ))
-                                    ):(
+                                    ) : (
                                         <></>
                                     )}
-                                    </ul>
-                        <Modal
-                            isOpen={itemModal}
-                            onRequestClose={closeItemModal}
-                            contentLabel="Ranked List"
-                            className={style.ItemInfoModal}
-                        >
-                            <div className={style.infoModalContainer}>
-                                <form onSubmit={() => itemsInformation(selectedRanking.id)}>
-                                    <label className={style.infoModalContent} htmlFor='position'>Posição: </label>
-                                    <input id='position' type='number' value={newPosition} onChange={(event) => setNewPosition(event.target.value)} required></input>
-                                    <label className={style.infoModalContent} htmlFor='itemDescription'>Descrição: </label>
-                                    <input id='itemDescription' type='text' value={newDescriptionItem} onChange={(event) => setNewDescriptionItem(event.target.value)} required></input>
-                                    <label className={style.infoModalContent} htmlFor='rating'>Nota: </label>
-                                    <input id='rating' type='number' value={newRating} onChange={(event) => setNewRating(event.target.value)} required></input>
-                                    <div className={style.newItemBtnContainer}>
-                                        <button type='button' className={style.newItemBtnContent} id='saveItemInformations' onClick={closeItemModal}>Cancelar</button>
-                                        <button type='submit' className={style.newItemBtnContent} id='saveItemInformations'>Salvar</button>
+                                </ul>
+                                <Modal
+                                    isOpen={itemModal}
+                                    onRequestClose={closeItemModal}
+                                    contentLabel="Ranked List"
+                                    className={style.ItemInfoModal}
+                                >
+                                    <div className={style.infoModalContainer}>
+                                        {/* ✅ CORRIGIDO: onSubmit sem argumentos */}
+                                        <form onSubmit={itemsInformation}>
+                                            <label className={style.infoModalContent} htmlFor='position'>Posição: </label>
+                                            <input id='position' type='number' value={newPosition} onChange={(event) => setNewPosition(event.target.value)} required></input>
+                                            <label className={style.infoModalContent} htmlFor='itemDescription'>Descrição: </label>
+                                            <input id='itemDescription' type='text' value={newDescriptionItem} onChange={(event) => setNewDescriptionItem(event.target.value)} required></input>
+                                            <label className={style.infoModalContent} htmlFor='rating'>Nota: </label>
+                                            <input id='rating' type='number' value={newRating} onChange={(event) => setNewRating(event.target.value)} required></input>
+                                            <div className={style.newItemBtnContainer}>
+                                                {/* ✅ CORRIGIDO: Cancela e limpa pendingItem */}
+                                                <button
+                                                    type='button'
+                                                    className={style.newItemBtnContent}
+                                                    onClick={() => {
+                                                        setPendingItem(null)
+                                                        closeItemModal()
+                                                    }}
+                                                >
+                                                    Cancelar
+                                                </button>
+                                                <button type='submit' className={style.newItemBtnContent}>Salvar</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                </form>
-                            </div>
-                        </Modal>
+                                </Modal>
                             </div>
                                 </>
-                            ):(
+                            ) : (
                                 <></>
                             )}
-                            
                         </Modal>
                     </>
                 ) : (
