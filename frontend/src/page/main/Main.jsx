@@ -8,7 +8,7 @@ Modal.setAppElement('#root')
 
 const Main = () => {
     //Rankings state
-    const [rankings, setRankings] = useState([])
+    const [rankings, setRankings] = useState(JSON.parse(localStorage.getItem('rankings')) || [])
     //Modal states
     const [newListModal, setNewListModal] = useState(false)
     const [selectedRankingModal, setSelectedRankingModal] = useState(false)
@@ -54,6 +54,9 @@ const Main = () => {
         setSelectedRankingModal(true)
     }
 
+    useEffect(() =>{
+        localStorage.setItem('rankings', JSON.stringify(rankings))
+    },[rankings])
 
     //Creating New Ranking
     const saveRanking = () => {
@@ -94,8 +97,6 @@ const Main = () => {
     const choosedItem = (rankingId, itemId) => {
         setItemModal(true)
 
-
-
         const selectedRanking = rankings.find(ranking => ranking.id === rankingId)
         const selectedItem = searchItems.find(item => item.id === itemId)
 
@@ -123,10 +124,14 @@ const Main = () => {
     }
 
     //Save items Informations (rating, position and description)
-    const itemsInformations = (rankingId) => {
+    const itemsInformation = (event, rankingId) => {
+        event.preventDefault()
+
         const selectedRanking = rankings.find(ranking => ranking.id === rankingId)
 
         if(!selectedRanking) return console.error('ID ou item não encontrado.')
+
+        if(selectedRanking.position === newPosition || newPosition === '') return alert('Posição já preenchida ou inexistente.')
 
         const updatedItemsInformations = selectedRanking.items.map(item => {
             if(item.id !== editingItemRef.current) return item
@@ -199,8 +204,11 @@ const Main = () => {
                         >
                             {selectedRanking ? (
                                 <>
-                                <label className={style.infoModalContent} htmlFor="item">Série: </label>
-                                <input type="text" id="item" value={newItem} onChange={(event) => setNewItem(event.target.value)}/>
+                                <div className={style.searchSection}>
+                                    <label className={style.infoModalContent} htmlFor="item">Série: </label>
+                                    <input type="text" id="item" value={newItem} onChange={(event) => setNewItem(event.target.value)}/>
+                                    <img className={style.cancelImg} src='../../public/X.png' alt='X' onClick={closeViewRankingModal}></img>
+                                </div>
                                 <h2 className={style.rankingTitle}>{selectedRanking.newTitle}</h2>
                             <p className={style.rankingDescription}>{selectedRanking.newDescription}</p>
                             <div>
@@ -254,13 +262,18 @@ const Main = () => {
                             className={style.ItemInfoModal}
                         >
                             <div className={style.infoModalContainer}>
-                                <label className={style.infoModalContent} htmlFor='position'>Posição: </label>
-                                <input id='position' type='number' value={newPosition} onChange={(event) => setNewPosition(event.target.value)}></input>
-                                <label className={style.infoModalContent} htmlFor='itemDescription'>Descrição: </label>
-                                <input id='itemDescription' type='text' value={newDescriptionItem} onChange={(event) => setNewDescriptionItem(event.target.value) }></input>
-                                <label className={style.infoModalContent} htmlFor='rating'>Nota: </label>
-                                <input id='rating' type='number' value={newRating} onChange={(event) => setNewRating(event.target.value) }></input>
-                                <button className={style.newItemBtn} id='saveItemInformations' onClick={() => itemsInformations(selectedRanking.id)}>Salvar</button>
+                                <form onSubmit={() => itemsInformation(selectedRanking.id)}>
+                                    <label className={style.infoModalContent} htmlFor='position'>Posição: </label>
+                                    <input id='position' type='number' value={newPosition} onChange={(event) => setNewPosition(event.target.value)} required></input>
+                                    <label className={style.infoModalContent} htmlFor='itemDescription'>Descrição: </label>
+                                    <input id='itemDescription' type='text' value={newDescriptionItem} onChange={(event) => setNewDescriptionItem(event.target.value)} required></input>
+                                    <label className={style.infoModalContent} htmlFor='rating'>Nota: </label>
+                                    <input id='rating' type='number' value={newRating} onChange={(event) => setNewRating(event.target.value)} required></input>
+                                    <div className={style.newItemBtnContainer}>
+                                        <button type='button' className={style.newItemBtnContent} id='saveItemInformations' onClick={closeItemModal}>Cancelar</button>
+                                        <button type='submit' className={style.newItemBtnContent} id='saveItemInformations'>Salvar</button>
+                                    </div>
+                                </form>
                             </div>
                         </Modal>
                             </div>
