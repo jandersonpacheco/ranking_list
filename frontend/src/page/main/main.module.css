@@ -1,7 +1,6 @@
 /* Estilos gerais */
 body {
     background-color: #161616;
-
 }
 
 .newRanking {
@@ -96,7 +95,15 @@ button {
     color:#f7f8ed
 }
 
-.title {
+.rankingTitle {
+    font-size: 24px;
+    font-weight: bold;
+    color:#fff;
+    display: flex;
+    justify-content: center;
+}
+
+.itemTitle{
     font-size: 18px;
     font-weight: bold;
 }

@@ -167,17 +167,18 @@ const Main = () => {
                     isOpen={newListModal}
                     onRequestClose={closeNewListModal}
                     contentLabel="Ranked List"
+                    className={style.modalStyle}
                 >
-                    <h2>Novo Ranking</h2>
-                    <div>
-                        <label htmlFor="title">Título: </label>
+                    <h2 className={style.rankingTitle}>Novo Ranking</h2>
+                    <div className={style.infoModalContainer}>
+                        <label className={style.infoModalContent} htmlFor="title">Título: </label>
                         <input type="text" id="title" value={newTitle} onChange={(event) => setNewTitle(event.target.value)}/>
-                        <label htmlFor="description">Descrição: </label>
-                        <textarea id="description" value={newDescription} onChange={(event) => setNewDescription(event.target.value)}/>
+                        <label className={style.infoModalContent} htmlFor="description">Descrição: </label>
+                        <input id="description" value={newDescription} onChange={(event) => setNewDescription(event.target.value)}/>
                     </div>
                     <div>
-                        <button onClick={closeNewListModal} type="submit">Cancelar</button>
-                        <button onClick={saveRanking} type="submit">Criar Ranking</button>
+                        <button className={style.newItemBtn} onClick={closeNewListModal} type="submit">Cancelar</button>
+                        <button className={style.newItemBtn} onClick={saveRanking} type="submit">Criar Ranking</button>
                     </div>
                 </Modal>
             </div>
@@ -198,7 +199,7 @@ const Main = () => {
                         >
                             {selectedRanking ? (
                                 <>
-                                <label htmlFor="item">Série: </label>
+                                <label className={style.infoModalContent} htmlFor="item">Série: </label>
                                 <input type="text" id="item" value={newItem} onChange={(event) => setNewItem(event.target.value)}/>
                                 <h2 className={style.rankingTitle}>{selectedRanking.newTitle}</h2>
                             <p className={style.rankingDescription}>{selectedRanking.newDescription}</p>
@@ -216,7 +217,7 @@ const Main = () => {
                                                         alt={item.name}
                                                     />
                                                     <div className={style.itemInformations}>
-                                                        <p className={style.title}>{item.title}</p>
+                                                        <p className={style.itemTitle}>{item.title}</p>
                                                         <p className={style.itemDescription}>{item.description}</p>
                                                         <p className={style.itemRating}>Nota: {item.rating}</p>
                                                     </div>
