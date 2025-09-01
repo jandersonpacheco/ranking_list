@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from 'react'
 import Modal from 'react-modal'
 import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
+import deleteBtn from '../../assets/delete.png'
+import xImg from '../../assets/x.png'
 
 Modal.setAppElement('#root')
 
@@ -59,6 +61,8 @@ const Main = () => {
 
     //Creating New Ranking
     const saveRanking = () => {
+
+        if(!newTitle) return alert('Informe o título do ranking.')
         const newRanking = {
             id: uuidv4(),
             newTitle,
@@ -90,7 +94,6 @@ const Main = () => {
             })
     }, [newItem])
 
-    // ✅ CORRIGIDO: Função sem updateRanking
     const choosedItem = (rankingId, itemId) => {
         const selectedRanking = rankings.find(ranking => ranking.id === rankingId)
         const selectedItem = searchItems.find(item => item.id === itemId)
@@ -112,10 +115,13 @@ const Main = () => {
     //Save items Informations (rating, position and description)
     const itemsInformation = (event) => {
         event.preventDefault()
+
         if(!pendingItem) return
         const { rankingId, item } = pendingItem
+
         const selectedRanking = rankings.find(ranking => ranking.id === rankingId)
         if (!selectedRanking) return
+
         const isPositionUsed = selectedRanking.items.some(i => i.position === newPosition)
         if (isPositionUsed || newPosition === '') return alert('Posição já preenchida ou inexistente.')
         const fullItem = {
@@ -124,6 +130,7 @@ const Main = () => {
             description: newDescriptionItem,
             rating: newRating
         }
+
         const updatedRanking = {
             ...selectedRanking,
             items: [...selectedRanking.items, fullItem].sort((a, b) => a.position - b.position)
@@ -137,6 +144,36 @@ const Main = () => {
         setNewRating('')
         setItemModal(false)
         setPendingItem(null)
+    }
+
+    const deleteRanking = (id) => {
+        const selectedRanking = rankings.find(ranking => ranking.id === id)
+
+        if(!selectedRanking) return console.log('Não localizado ID')
+
+        const updatedRanking = rankings.filter(ranking => ranking.id !== selectedRanking.id)
+
+        setRankings(updatedRanking)
+    }
+
+    const deleteItems = (id) =>{
+        const selectedItem = selectedRanking.items.find(item => item.id === id)
+        if(!selectedItem) return console.log('ID não localizado')
+
+        const updatedItems = selectedRanking.items.filter(item => item.id !== id)
+
+        const updatedRanking = {
+            ...selectedRanking,
+            items: updatedItems
+        }
+
+        setRankings(prevRankings => prevRankings.map(ranking =>
+            ranking.id === selectedRanking.id ? updatedRanking : ranking
+            )
+        )
+
+        setSelectedRanking(updatedRanking)
+
     }
 
     return (
@@ -167,9 +204,12 @@ const Main = () => {
                 {rankings.length > 0 ? (
                     <>
                         {rankings.map((ranking) => (
-                            <button key={ranking.id} onClick={() => viewRanking(ranking.id)}>
-                                {ranking.newTitle}
-                            </button>
+                            <div className={style.rankingContainer}>
+                                <button key={ranking.id} onClick={() => viewRanking(ranking.id)}>
+                                    {ranking.newTitle}
+                                </button>
+                                <img className={style.cancelImg} src={deleteBtn} alt='Excluir' onClick={() => deleteRanking(ranking.id)}></img>
+                            </div>
                         ))}
                         <Modal
                             isOpen={selectedRankingModal}
@@ -182,16 +222,18 @@ const Main = () => {
                                 <div className={style.searchSection}>
                                     <label className={style.infoModalContent} htmlFor="item">Série: </label>
                                     <input type="text" id="item" value={newItem} onChange={(event) => setNewItem(event.target.value)}/>
-                                    <img className={style.cancelImg} src='../../assets/X.png' alt='X' onClick={closeViewRankingModal}></img>
+                                    <img className={style.cancelImg} src={xImg} alt='X' onClick={closeViewRankingModal}></img>
                                 </div>
                                 <h2 className={style.rankingTitle}>{selectedRanking.newTitle}</h2>
-                            <p className={style.rankingDescription}>{selectedRanking.newDescription}</p>
-                            <div></div>
+                                <p className={style.rankingDescription}>{selectedRanking.newDescription}</p>
                             <div className={style.viewingRanking}>
                                 {newItem === '' && selectedRanking.items && selectedRanking.items.length > 0 ? (
                                     selectedRanking.items.map((item) => (
                                         <div key={item.itemId}>
-                                            <p className={style.position}>{item.position}º</p>
+                                            <div className={style.itemHead}>
+                                                <p className={style.position}>{item.position}º</p>
+                                                <img className={style.deleteItemImg} src={xImg} alt='X' onClick={() => deleteItems(item.id)}></img>
+                                            </div>
                                             <div className={style.itemContainer}>
                                                 <img
                                                     className={style.picture}
@@ -236,7 +278,6 @@ const Main = () => {
                                     className={style.ItemInfoModal}
                                 >
                                     <div className={style.infoModalContainer}>
-                                        {/* ✅ CORRIGIDO: onSubmit sem argumentos */}
                                         <form onSubmit={itemsInformation}>
                                             <label className={style.infoModalContent} htmlFor='position'>Posição: </label>
                                             <input id='position' type='number' value={newPosition} onChange={(event) => setNewPosition(event.target.value)} required></input>
@@ -245,7 +286,6 @@ const Main = () => {
                                             <label className={style.infoModalContent} htmlFor='rating'>Nota: </label>
                                             <input id='rating' type='number' value={newRating} onChange={(event) => setNewRating(event.target.value)} required></input>
                                             <div className={style.newItemBtnContainer}>
-                                                {/* ✅ CORRIGIDO: Cancela e limpa pendingItem */}
                                                 <button
                                                     type='button'
                                                     className={style.newItemBtnContent}

@@ -28,12 +28,18 @@ button {
 
 .rankings {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     background-color: #fff;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     margin-top: 10px;
+}
+
+.rankingContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 .rankingTitle {
@@ -104,6 +110,18 @@ button {
 .cancelImg{
     margin-left: 10px;
     max-width: 35px;
+    height: auto;
+    align-self: center;
+}
+
+.itemHead{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.deleteItemImg{
+    max-width: 25px;
     height: auto;
     align-self: center;
 }
@@ -209,9 +227,9 @@ input:focus {
 }
 
 /* Responsividade: Mobile-First */
-@media (max-width: 310px) {
+@media (max-width: 299px) {
     .modalStyle {
-        width: 95%; /* Modal ocupa 95% da largura em telas muito pequenas */
+        width: 100%; /* Modal ocupa 95% da largura em telas muito pequenas */
     }
 
     .modalContent {
