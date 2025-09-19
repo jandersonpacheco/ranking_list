@@ -4,7 +4,6 @@ import Modal from 'react-modal'
 import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
 import deleteBtn from '../../assets/delete.png'
-import xImg from '../../assets/x.png'
 
 Modal.setAppElement('#root')
 
@@ -220,9 +219,9 @@ const Main = () => {
                             {selectedRanking ? (
                                 <>
                                 <div className={style.searchSection}>
-                                    <label className={style.infoModalContent} htmlFor="item">Série: </label>
-                                    <input type="text" id="item" value={newItem} onChange={(event) => setNewItem(event.target.value)}/>
-                                    <img className={style.cancelImg} src={xImg} alt='X' onClick={closeViewRankingModal}></img>
+                                    <label className={style.titleLabel} htmlFor="item">Série: </label>
+                                    <input className={style.searchBox} type="text" id="item" value={newItem} onChange={(event) => setNewItem(event.target.value)}/>
+                                    <p className={style.cancelBtn} onClick={closeViewRankingModal}>X</p>
                                 </div>
                                 <h2 className={style.rankingTitle}>{selectedRanking.newTitle}</h2>
                                 <p className={style.rankingDescription}>{selectedRanking.newDescription}</p>
@@ -232,7 +231,7 @@ const Main = () => {
                                         <div key={item.itemId}>
                                             <div className={style.itemHead}>
                                                 <p className={style.position}>{item.position}º</p>
-                                                <img className={style.deleteItemImg} src={xImg} alt='X' onClick={() => deleteItems(item.id)}></img>
+                                                <p className={style.cancelBtn} onClick={() => deleteItems(item.id)}></p>
                                             </div>
                                             <div className={style.itemContainer}>
                                                 <img

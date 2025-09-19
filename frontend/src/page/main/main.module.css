@@ -105,14 +105,25 @@ button {
 .searchSection{
     display: flex;
     flex-wrap: nowrap;
+    justify-content: space-around;
+}
+
+.titleLabel{
+    width: 45px; /* <- Define uma largura fixa para os labels */
+    font-weight: 5050;
+    margin-top: 15px;
+    color: #fff;
+}
+
+.searchBox{
+    max-height: 10px;
+    margin-top: 10px;
 
 }
 
-.cancelImg{
+.cancelBtn{
     margin-left: 10px;
-    max-width: 35px;
-    height: auto;
-    align-self: center;
+    color:#f7f8ed   
 }
 
 .itemHead{
@@ -201,8 +212,8 @@ button {
 .infoModalContent {
     width: 100px; /* <- Define uma largura fixa para os labels */
     font-weight: 5050;
-    margin-right: 10px;
-    margin-top: 5px;
+    margin-right: 50px;
+    margin-top: 15px;
     color: #fff;
 }
 
