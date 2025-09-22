@@ -1,0 +1,120 @@
+[33mcommit f6197348dfbb42068296988720de11f655f8c8c8[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Janderson Oliveira Pacheco <janderson.katsu@gmail.com>
+Date:   Fri Sep 19 11:41:14 2025 -0300
+
+    Removendo imagem de botão de fechamento de modal
+
+[33mcommit 34bcc25f33f4e4f6c1562b95ad08d262ef8fbc94[m
+Author: Janderson Oliveira Pacheco <janderson.katsu@gmail.com>
+Date:   Fri Sep 19 10:37:43 2025 -0300
+
+    corrigindo design que cortava a parte debaixo da última série da lista.
+
+[33mcommit 51f09f2b643cba65d4cb8a73108aefb678258678[m
+Author: Janderson Oliveira Pacheco <janderson.katsu@gmail.com>
+Date:   Mon Sep 1 16:35:14 2025 -0300
+
+    Criada as funções de exclusão de item e de ranking
+
+[33mcommit 3fc3f4c047129e69a3e6d0f4f46ee43dd9f0302b[m
+Author: Janderson Oliveira Pacheco <83798201+jandersonpacheco@users.noreply.github.com>
+Date:   Fri Aug 29 17:11:55 2025 -0300
+
+    Delete frontend/node_modules directory
+
+[33mcommit 045da4a46b99b17e05bd87c3be3c8f7782ef2d49[m
+Merge: d9f6111 f8b5398
+Author: Janderson Oliveira Pacheco <janderson.katsu@gmail.com>
+Date:   Fri Aug 29 17:11:38 2025 -0300
+
+    funções de salvamentos refaturadas
+
+[33mcommit d9f6111526a13b951030b2e26aa250af61a7436f[m
+Author: Janderson Oliveira Pacheco <janderson.katsu@gmail.com>
+Date:   Fri Aug 29 13:17:13 2025 -0300
+
+    Adicionado botão de fechamento de modal além da implementação do salvamento no localstorage.
+
+[33mcommit f8b53985654da7a550b915a4f273e821054f0d2a[m
+Author: Janderson Oliveira Pacheco <83798201+jandersonpacheco@users.noreply.github.com>
+Date:   Fri Aug 29 09:45:44 2025 -0300
+
+    Delete frontend/node_modules directory
+
+[33mcommit ef1b4242382f7f6342e3507fb4464530b768db9f[m
+Author: Janderson Oliveira Pacheco <janderson.katsu@gmail.com>
+Date:   Fri Aug 29 09:42:53 2025 -0300
+
+    estilização dos modais.
+
+[33mcommit 86150d72769783ebdccd86798f62bca58f0b0afc[m
+Author: Janderson Oliveira Pacheco <83798201+jandersonpacheco@users.noreply.github.com>
+Date:   Thu Aug 28 19:23:23 2025 -0300
+
+    Delete frontend/node_modules directory
+
+[33mcommit 2fc6395060733ae22d5bdb392342d69d4b5f5161[m
+Author: Janderson Oliveira <janderson.katsu@gmail.com>
+Date:   Thu Aug 28 19:11:34 2025 -0300
+
+    inciado estilização
+
+[33mcommit b29a4f4f57ad9d5b0932005e24d0f92dabcad866[m
+Author: Janderson Oliveira <janderson.katsu@gmail.com>
+Date:   Thu Aug 28 15:03:48 2025 -0300
+
+    Remover node_modules do repositório
+
+[33mcommit 3210dcfd103c2b16a7fb2ede6bcbacf32c5beabe[m
+Author: Janderson Oliveira <janderson.katsu@gmail.com>
+Date:   Thu Aug 28 14:54:44 2025 -0300
+
+    updating depencences
+
+[33mcommit 3f58df730a4cecae0b66104b7cb084f33cd391cc[m
+Author: Janderson Oliveira <janderson.katsu@gmail.com>
+Date:   Thu Aug 28 14:49:11 2025 -0300
+
+    creating a new vercel.json
+
+[33mcommit fa011b263cef0ec0dae55ee6c9fe22ead944850c[m
+Author: Janderson Oliveira <janderson.katsu@gmail.com>
+Date:   Thu Aug 28 14:46:44 2025 -0300
+
+    vercel.json deleted
+
+[33mcommit 4ec9f564139299d8a024ed608413a88e84278289[m
+Author: Janderson Oliveira Pacheco <83798201+jandersonpacheco@users.noreply.github.com>
+Date:   Thu Aug 28 14:38:39 2025 -0300
+
+    vercel.json Updated
+
+[33mcommit eb042bb8195b46061b2429ce117e3b724e6c1cc2[m
+Author: Janderson Oliveira <janderson.katsu@gmail.com>
+Date:   Thu Aug 28 14:25:28 2025 -0300
+
+    vercel.json updated
+
+[33mcommit e0baa12ec355fb0ec84aaa39b610615ae0eb5f40[m
+Author: Janderson Oliveira Pacheco <83798201+jandersonpacheco@users.noreply.github.com>
+Date:   Thu Aug 28 14:22:28 2025 -0300
+
+    Update vercel.json
+
+[33mcommit e6378b5691645da3cc2ee3b420f25b7f7299b96e[m
+Author: Janderson Oliveira Pacheco <83798201+jandersonpacheco@users.noreply.github.com>
+Date:   Thu Aug 28 14:15:17 2025 -0300
+
+    Update vercel.json
+
+[33mcommit 3e27af2a90ce3693bb3c33eac5fe87f7e95e754b[m
+Author: Janderson Oliveira Pacheco <83798201+jandersonpacheco@users.noreply.github.com>
+Date:   Thu Aug 28 12:42:43 2025 -0300
+
+    Create vercel.json
+
+[33mcommit 26ca2a0cfd1a5601492dd0c8df91cc4acb9928a2[m
+Author: Janderson Oliveira <janderson.katsu@gmail.com>
+Date:   Thu Aug 28 12:36:41 2025 -0300
+
+    first commit

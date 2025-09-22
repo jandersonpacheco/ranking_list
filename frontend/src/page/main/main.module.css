@@ -98,7 +98,7 @@ button {
 .position{
     font-weight: bold;
     margin-right: 5px;
-    color:#f7f8ed
+    color:#f7f8ed;
 }
 
 .searchSection{
@@ -118,6 +118,13 @@ button {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.btnImg{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    column-gap: 30%;
 }
 
 .deleteItemImg{

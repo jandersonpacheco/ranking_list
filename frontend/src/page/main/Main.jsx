@@ -4,7 +4,8 @@ import Modal from 'react-modal'
 import { v4 as uuidv4 } from 'uuid'
 import axios from 'axios'
 import deleteBtn from '../../assets/delete.png'
-import xImg from '../../assets/x.png'
+import xImg from '../../assets/X.png'
+import editImg from '../../assets/pencil.png'
 
 Modal.setAppElement('#root')
 
@@ -30,6 +31,7 @@ const Main = () => {
     const editingItemRef = useRef(null)
     //API Data
     const [searchItems, setSearchItems] = useState([])
+    const [isEditing, setIsEditing] = useState (false)
     const [loading, setLoading] = useState(true)
 
     //New Ranking Modal Function
@@ -123,7 +125,6 @@ const Main = () => {
         if (!selectedRanking) return
 
         const isPositionUsed = selectedRanking.items.some(i => i.position === newPosition)
-        if (isPositionUsed || newPosition === '') return alert('Posição já preenchida ou inexistente.')
         const fullItem = {
             ...item,
             position: newPosition,
@@ -131,20 +132,39 @@ const Main = () => {
             rating: newRating
         }
 
+         if (isEditing) {
+        // Atualiza o item existente
+        const updatedRanking = {
+            ...selectedRanking,
+            items: selectedRanking.items.map(existingItem =>
+                existingItem.id === fullItem.id ? fullItem : existingItem
+            )
+        };
+
+        setRankings(prevRankings => prevRankings.map(ranking =>
+            ranking.id === rankingId ? updatedRanking : ranking
+        ));
+        setSelectedRanking(updatedRanking);
+    } else {
+        // Cria um novo item
         const updatedRanking = {
             ...selectedRanking,
             items: [...selectedRanking.items, fullItem].sort((a, b) => a.position - b.position)
-        }
+        };
+
         setRankings(prevRankings => prevRankings.map(ranking =>
             ranking.id === rankingId ? updatedRanking : ranking
-        ))
+        ));
         setSelectedRanking(updatedRanking)
-        setNewDescriptionItem('')
-        setNewPosition('')
-        setNewRating('')
-        setItemModal(false)
-        setPendingItem(null)
+        setIsEditing(false)
     }
+
+    setNewDescriptionItem('');
+    setNewPosition('');
+    setNewRating('');
+    setItemModal(false);
+    setPendingItem(null);
+}
 
     const deleteRanking = (id) => {
         const selectedRanking = rankings.find(ranking => ranking.id === id)
@@ -175,6 +195,27 @@ const Main = () => {
         setSelectedRanking(updatedRanking)
 
     }
+
+const editItem = (id) => {
+    const selectedItem = selectedRanking.items.find(item => item.id === id);
+    if (!selectedItem) return console.log('ID não localizado.');
+
+    // Atualiza o pendingItem com as informações do item
+    setPendingItem({
+        rankingId: selectedRanking.id,
+        item: {
+            id: selectedItem.id,
+            title: selectedItem.title,
+            poster: selectedItem.poster
+        }
+    });
+
+    setNewPosition(selectedItem.position);
+    setNewDescriptionItem(selectedItem.description);
+    setNewRating(selectedItem.rating);
+    setIsEditing(true);  // Modo de edição
+    setItemModal(true);  // Abre o modal
+}
 
     return (
         <>
@@ -232,7 +273,10 @@ const Main = () => {
                                         <div key={item.itemId}>
                                             <div className={style.itemHead}>
                                                 <p className={style.position}>{item.position}º</p>
-                                                <img className={style.deleteItemImg} src={xImg} alt='X' onClick={() => deleteItems(item.id)}></img>
+                                                <div className={style.btnImg}>
+                                                    <img className={style.deleteItemImg} src={editImg} alt='edit' onClick={() => editItem(item.id)}></img>
+                                                    <img className={style.deleteItemImg} src={xImg} alt='X' onClick={() => deleteItems(item.id)}></img>                                                
+                                                </div>
                                             </div>
                                             <div className={style.itemContainer}>
                                                 <img
