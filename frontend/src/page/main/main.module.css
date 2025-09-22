@@ -258,7 +258,7 @@ input:focus {
 @media (min-width: 310px) and (max-width: 600px) {
     .modalStyle {
         width: 85%;  /* Modal ocupa 85% da largura em dispositivos de tamanho médio */
-        margin-bottom: 10vh;
+        margin-bottom: 40vh;
     }
 
     .picture {
