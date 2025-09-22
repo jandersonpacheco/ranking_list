@@ -124,7 +124,6 @@ const Main = () => {
         const selectedRanking = rankings.find(ranking => ranking.id === rankingId)
         if (!selectedRanking) return
 
-        const isPositionUsed = selectedRanking.items.some(i => i.position === newPosition)
         const fullItem = {
             ...item,
             position: newPosition,
@@ -139,22 +138,23 @@ const Main = () => {
             items: selectedRanking.items.map(existingItem =>
                 existingItem.id === fullItem.id ? fullItem : existingItem
             )
-        };
+            .sort((a, b)=> a.position - b.position)
+        }
 
         setRankings(prevRankings => prevRankings.map(ranking =>
             ranking.id === rankingId ? updatedRanking : ranking
-        ));
+        ))
         setSelectedRanking(updatedRanking);
     } else {
         // Cria um novo item
         const updatedRanking = {
             ...selectedRanking,
             items: [...selectedRanking.items, fullItem].sort((a, b) => a.position - b.position)
-        };
+        }
 
         setRankings(prevRankings => prevRankings.map(ranking =>
             ranking.id === rankingId ? updatedRanking : ranking
-        ));
+        ))
         setSelectedRanking(updatedRanking)
         setIsEditing(false)
     }
