@@ -70,6 +70,7 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 100px;
 }
 
 .itemContainer, .searchItem {
@@ -239,7 +240,7 @@ input:focus {
 /* Responsividade: Mobile-First */
 @media (max-width: 299px) {
     .modalStyle {
-        width: 100%; /* Modal ocupa 95% da largura em telas muito pequenas */
+        width: 100%;
     }
 
     .modalContent {
@@ -258,7 +259,6 @@ input:focus {
 @media (min-width: 310px) and (max-width: 600px) {
     .modalStyle {
         width: 85%;  /* Modal ocupa 85% da largura em dispositivos de tamanho médio */
-        margin-bottom: 40vh;
     }
 
     .picture {
