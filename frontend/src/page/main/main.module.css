@@ -1,6 +1,9 @@
 /* Estilos gerais */
 body {
     background-color: #161616;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100vh;
 }
 
 .newRanking {
@@ -67,6 +70,7 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 10vh;
 }
 
 .itemContainer, .searchItem {
@@ -184,7 +188,7 @@ button {
 }
 
 .ItemInfoModal{
-    margin-top: 50vw;
+    margin-top: 50vh;
     width: 85%;         /* Modal ocupa 90% da largura */
     max-width: 600px;   /* Largura máxima do modal */
     padding: 20px;
@@ -255,6 +259,7 @@ input:focus {
 @media (min-width: 310px) and (max-width: 600px) {
     .modalStyle {
         width: 85%;  /* Modal ocupa 85% da largura em dispositivos de tamanho médio */
+
     }
 
     .picture {
