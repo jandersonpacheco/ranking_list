@@ -245,7 +245,7 @@ const editItem = (id) => {
                 {rankings.length > 0 ? (
                     <>
                         {rankings.map((ranking) => (
-                            <div className={style.rankingContainer}>
+                            <div key={ranking.id} className={style.rankingContainer}>
                                 <button key={ranking.id} onClick={() => viewRanking(ranking.id)}>
                                     {ranking.newTitle}
                                 </button>
